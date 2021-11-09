@@ -77,6 +77,8 @@ class ExpansionPanel {
     required this.body,
     this.isExpanded = false,
     this.canTapOnHeader = false,
+    this.marginIcon,
+    this.paddingIcon,
     this.backgroundColor,
   }) : assert(headerBuilder != null),
        assert(body != null),
@@ -105,6 +107,16 @@ class ExpansionPanel {
   ///
   /// Defaults to [ThemeData.cardColor].
   final Color? backgroundColor;
+
+  /// Defines the right icon margin.
+  ///
+  /// Defaults to [EdgeInsetsDirectional.only(end: 8.0)].
+  final EdgeInsetsGeometry? marginIcon;
+
+  /// Defines the right icon padding.
+  ///
+  /// Defaults to [EdgeInsets.all(16.0)].
+  final EdgeInsetsGeometry? paddingIcon;
 }
 
 /// An expansion panel that allows for radio-like functionality.
@@ -127,6 +139,8 @@ class ExpansionPanelRadio extends ExpansionPanel {
     required ExpansionPanelHeaderBuilder headerBuilder,
     required Widget body,
     bool canTapOnHeader = false,
+    EdgeInsetsGeometry? marginIcon,
+    EdgeInsetsGeometry? paddingIcon,
     Color? backgroundColor,
   }) : assert(value != null),
       super(
@@ -134,6 +148,8 @@ class ExpansionPanelRadio extends ExpansionPanel {
         headerBuilder: headerBuilder,
         canTapOnHeader: canTapOnHeader,
         backgroundColor: backgroundColor,
+        paddingIcon: paddingIcon,
+        marginIcon:marginIcon,
       );
 
   /// The value that uniquely identifies a radio panel so that the currently
@@ -356,10 +372,10 @@ class _ExpansionPanelListState extends State<ExpansionPanelList> {
       );
 
       Widget expandIconContainer = Container(
-        margin: const EdgeInsetsDirectional.only(end: 8.0),
+        margin: child.marginIcon ?? const EdgeInsetsDirectional.only(end: 8.0),
         child: ExpandIcon(
-          isExpanded: _isChildExpanded(index),
-          padding: const EdgeInsets.all(16.0),
+          isExpanded:  _isChildExpanded(index),
+          padding: child.paddingIcon ?? const EdgeInsets.all(16.0),
           onPressed: !child.canTapOnHeader
               ? (bool isExpanded) => _handlePressed(isExpanded, index)
               : null,
